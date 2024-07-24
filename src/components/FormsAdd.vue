@@ -44,6 +44,32 @@ const estados = ref([
   { name: 'Estrangeiro', sigla: 'EX' }
 ])
 
+/*Função - Status do Eye Icon (Visualizar Senha) */
+const eyeType = ref('bi-eye-fill')
+function tradeEyeType() {
+  if (eyeType.value == 'bi-eye-fill') {
+    eyeType.value = 'bi-eye-slash-fill'
+  } else {
+    eyeType.value = 'bi-eye-fill'
+  }
+}
+
+/*Função - Revelar Senha (Mudar type para text/password) */
+const showPassword = ref('password')
+function hidePassword() {
+  if (showPassword.value == 'password') {
+    showPassword.value = 'text'
+  } else {
+    showPassword.value = 'password'
+  }
+}
+/*Validar se o estado está 'none'*/
+const estadoNulo = ref(false)
+
+/*Validar se senhas estão idênticas */
+const senhaDivergente = ref(false)
+const confirmPassword = ref('')
+
 const linguagens = ref([
   ' C#',
   ' Python',
@@ -57,29 +83,7 @@ const linguagens = ref([
   ' Ruby'
 ])
 
-const eyeType = ref('bi-eye-fill')
-function tradeEyeType() {
-  if (eyeType.value == 'bi-eye-fill') {
-    eyeType.value = 'bi-eye-slash-fill'
-  } else {
-    eyeType.value = 'bi-eye-fill'
-  }
-}
-
-const showPassword = ref('password')
-function hidePassword() {
-  if (showPassword.value == 'password') {
-    showPassword.value = 'text'
-  } else {
-    showPassword.value = 'password'
-  }
-}
-
-const estadoNulo = ref(false)
-
-const senhaDivergente = ref(false)
-const confirmPassword = ref('')
-
+/*Função - Validar Formulario*/
 const mostrarInformacoes = ref(true)
 function InfoBtn() {
   if (user.value.password == confirmPassword.value) {
@@ -95,7 +99,7 @@ function InfoBtn() {
 </script>
 
 <template>
-    <main>
+  <main>
     <div
       v-if="senhaDivergente"
       class="w-screen h-screen absolute flex items-center justify-center backdrop-blur-sm z-10"
@@ -272,7 +276,7 @@ function InfoBtn() {
           </div>
         </div>
       </form>
-    </main>
+      </main>
 </template>
 
 <style scoped>
