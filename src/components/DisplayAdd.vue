@@ -1,19 +1,13 @@
 <script setup>
-import { ref } from 'vue'
+// import { ref } from 'vue'
 
-/*Função - Validar Formulario*/
-const mostrarInformacoes = ref(true)
-function InfoBtn() {
-  if (user.value.password == confirmPassword.value) {
-    if (user.value.estado !== 'none') {
-      mostrarInformacoes.value = !mostrarInformacoes.value
-    } else {
-      estadoNulo.value = !estadoNulo.value
-    }
-  } else {
-    senhaDivergente.value = !senhaDivergente.value
-  }
-}
+const emit = defineEmits(['editar'])
+defineProps(['user'])
+
+
+ function editar() {
+  emit('editar') }
+
 </script>
 <template>
 
@@ -80,7 +74,7 @@ function InfoBtn() {
         </div>
       </div>
       <input
-        @click="InfoBtn()"
+        @click="editar"
         class="bg-white text-purple-900 rounded-2xl w-28 p-2 cursor-pointer mt-4 text-center font-medium"
         type="button"
         value="Editar"

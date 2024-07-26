@@ -1,6 +1,7 @@
 <script setup>
-import {ref} from 'vue'
+import { ref } from 'vue'
 
+const emit = defineEmits(['salvar'])
 const user = ref({
   name: '',
   email: '',
@@ -84,11 +85,11 @@ const linguagens = ref([
 ])
 
 /*Função - Validar Formulario*/
-const mostrarInformacoes = ref(true)
-function InfoBtn() {
+
+function salvar() {
   if (user.value.password == confirmPassword.value) {
     if (user.value.estado !== 'none') {
-      mostrarInformacoes.value = !mostrarInformacoes.value
+      emit('salvar', { ...user.value })
     } else {
       estadoNulo.value = !estadoNulo.value
     }
@@ -132,151 +133,145 @@ function InfoBtn() {
         </button>
       </div>
     </div>
-    <transition name="form" mode="out-in"/>
-      <form
-        v-if="mostrarInformacoes"
-        class="flex justify-center items-center w-screen h-screen bg-purple-900"
-        @submit.prevent="InfoBtn"
-      >
-        <div class="flex flex-col w-40/1 h-95/1 rounded-xl bg-white overflow-y-auto px-16">
-          <div class="flex sticky justify-center w-full font-poppins py-5">
-            <h1 class="text-6xl">Forms</h1>
-          </div>
-          <div class="flex flex-row w-full px-10 justify-between">
-            <div class="w-45/1">
-              <input
-                class="input-css w-full border-greenp border-b-2"
-                v-model="user.name"
-                placeholder="Nome"
-                type="text"
-                required
-              />
-            </div>
-            <div class="w-45/1">
-              <input
-                class="input-css w-full"
-                v-model="user.email"
-                placeholder="Email"
-                type="email"
-                required
-              />
-            </div>
-          </div>
-
-          <div class="flex flex-row w-full px-10 justify-between pt-5">
-            <div class="w-45/1">
-              <input
-                class="input-css"
-                v-model="user.password"
-                placeholder="Senha"
-                :type="showPassword"
-                required
-              />
-            </div>
-
-            <button @click="hidePassword" type="button">
-              <i class="bi" @click="tradeEyeType()" :class="eyeType" fill="black"></i>
-            </button>
-
-            <div class="w-45/1">
-              <input
-                class="input-css"
-                v-model="confirmPassword"
-                placeholder="Confirme sua senha"
-                :type="showPassword"
-                required
-              />
-            </div>
-          </div>
-
-          <div class="flex flex-col w-full px-10 gap-5 mt-5">
-            <div class="sobre-input">
-              <input
-                class="input-css"
-                v-model="user.dataNasc"
-                placeholder="Data de Nascimento"
-                type="text"
-                onfocus="this.type='date'"
-                required
-              />
-            </div>
-
-            <div class="sobre-input">
-              <input
-                class="input-css"
-                v-model="user.endereco"
-                placeholder="Endereço"
-                type="text"
-                required
-              />
-            </div>
-
-            <div class="sobre-input">
-              <input
-                class="input-css"
-                v-model="user.cidade"
-                placeholder="Cidade"
-                type="text"
-                required
-              />
-            </div>
-
-            <div class="sobre-input">
-              <select v-model="user.estado" class="input-css select-css" name="" id="">
-                <option disabled selected value="none">Estado</option>
-                <option class="op-css" v-for="(value, index) in estados" :key="index">
-                  {{ value.name }} - {{ value.sigla }}
-                </option>
-              </select>
-            </div>
-            <div class="sobre-input">
-              <input
-                class="input-css"
-                v-model="user.hobbies"
-                placeholder="Hobbies"
-                type="text"
-                required
-              />
-            </div>
-            <div class="sobre-input">
-              <textarea
-                class="input-css border-2 border-gfn border-solid rounded-xl"
-                type="text"
-                v-model="user.bio"
-                placeholder="Biografia"
-              />
-            </div>
-            <div class="sobre-inputs-2">
-              <div class="text-center">
-                <label class="label-prog">Linguagens de programação</label>
-              </div>
-              <div class="columns-5 pt-5">
-                <label
-                  v-for="(value, index) of linguagens"
-                  :key="index"
-                  class="flex flex-col items-center container"
-                >
-                  {{ value }}
-                  <input
-                    checked="checked"
-                    type="checkbox"
-                    v-model="user.linguagens"
-                    :value="value"
-                  />
-                  <div class="checkmark"></div>
-                </label>
-              </div>
-            </div>
-          </div>
-          <div class="flex justify-center p-5">
+    <transition name="form" mode="out-in" />
+    <form
+      class="flex justify-center items-center w-screen h-screen bg-purple-900"
+      @submit.prevent="salvar"
+    >
+      <div class="flex flex-col w-40/1 h-95/1 rounded-xl bg-white overflow-y-auto px-16">
+        <div class="flex sticky justify-center w-full font-poppins py-5">
+          <h1 class="text-6xl">Forms</h1>
+        </div>
+        <div class="flex flex-row w-full px-10 justify-between">
+          <div class="w-45/1">
             <input
-              class="bg-purple-900 text-white rounded-2xl w-28 p-2 cursor-pointer font-medium"
-              type="submit"
+              class="input-css w-full border-greenp border-b-2"
+              v-model="user.name"
+              placeholder="Nome"
+              type="text"
+              required
+            />
+          </div>
+          <div class="w-45/1">
+            <input
+              class="input-css w-full"
+              v-model="user.email"
+              placeholder="Email"
+              type="email"
+              required
             />
           </div>
         </div>
-      </form>
-      </main>
+
+        <div class="flex flex-row w-full px-10 justify-between pt-5">
+          <div class="w-45/1">
+            <input
+              class="input-css"
+              v-model="user.password"
+              placeholder="Senha"
+              :type="showPassword"
+              required
+            />
+          </div>
+
+          <button @click="hidePassword" type="button">
+            <i class="bi" @click="tradeEyeType()" :class="eyeType" fill="black"></i>
+          </button>
+
+          <div class="w-45/1">
+            <input
+              class="input-css"
+              v-model="confirmPassword"
+              placeholder="Confirme sua senha"
+              :type="showPassword"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="flex flex-col w-full px-10 gap-5 mt-5">
+          <div class="sobre-input">
+            <input
+              class="input-css"
+              v-model="user.dataNasc"
+              placeholder="Data de Nascimento"
+              type="text"
+              onfocus="this.type='date'"
+              required
+            />
+          </div>
+
+          <div class="sobre-input">
+            <input
+              class="input-css"
+              v-model="user.endereco"
+              placeholder="Endereço"
+              type="text"
+              required
+            />
+          </div>
+
+          <div class="sobre-input">
+            <input
+              class="input-css"
+              v-model="user.cidade"
+              placeholder="Cidade"
+              type="text"
+              required
+            />
+          </div>
+
+          <div class="sobre-input">
+            <select v-model="user.estado" class="input-css select-css" name="" id="">
+              <option disabled selected value="none">Estado</option>
+              <option class="op-css" v-for="(value, index) in estados" :key="index">
+                {{ value.name }} - {{ value.sigla }}
+              </option>
+            </select>
+          </div>
+          <div class="sobre-input">
+            <input
+              class="input-css"
+              v-model="user.hobbies"
+              placeholder="Hobbies"
+              type="text"
+              required
+            />
+          </div>
+          <div class="sobre-input">
+            <textarea
+              class="input-css border-2 border-gfn border-solid rounded-xl"
+              type="text"
+              v-model="user.bio"
+              placeholder="Biografia"
+            />
+          </div>
+          <div class="sobre-inputs-2">
+            <div class="text-center">
+              <label class="label-prog">Linguagens de programação</label>
+            </div>
+            <div class="columns-5 pt-5">
+              <label
+                v-for="(value, index) of linguagens"
+                :key="index"
+                class="flex flex-col items-center container"
+              >
+                {{ value }}
+                <input checked="checked" type="checkbox" v-model="user.linguagens" :value="value" />
+                <div class="checkmark"></div>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="flex justify-center p-5">
+          <input
+            class="bg-purple-900 text-white rounded-2xl w-28 p-2 cursor-pointer font-medium"
+            type="submit"
+          />
+        </div>
+      </div>
+    </form>
+  </main>
 </template>
 
 <style scoped>
@@ -411,4 +406,5 @@ input:focus,
   font-size: 10px;
   padding-bottom: px;
   color: rgb(90, 90, 90);
-}</style>
+}
+</style>
